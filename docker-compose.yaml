@@ -1,0 +1,15 @@
+services:
+  mobile-banking-db:
+    image: postgres:16.3-bullseye
+    container_name: con-sms-db
+    ports:
+      - 4441:5432
+    environment:
+      POSTGRES_PASSWORD: sms@2024
+      POSTGRES_USER: sms
+      POSTGRES_DB: sms_db
+    volumes:
+      - mobile-banking-vol:/var/lib/postgresql/data
+
+volumes:
+  mobile-banking-vol:
