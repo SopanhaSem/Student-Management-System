@@ -10,4 +10,5 @@ import java.util.UUID;
 @Repository
 public interface DepartmentRepository extends JpaRepository<Department, Integer> {
     Optional<Department> findByDepartmentName(String departmentName);
+    Integer findByDepartmentId(Integer id);
 }

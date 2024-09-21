@@ -34,12 +34,14 @@ public class EnrollmentServiceImpl implements EnrollmentService{
                 ));
         Course course = courseRepository.findById(enrollmentRequest.courseId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not found"));
+
         Enrollment enrollment = new Enrollment();
         enrollment.setUser(user);
         enrollment.setCourse(course);
         enrollment.setEnrollmentDate(LocalDate.now());
         enrollment.setGrade(enrollmentRequest.grade());
         enrollmentRepository.save(enrollment);
+
         return EnrollmentResponse.builder()
                 .userId(enrollment.getUser().getUserId())
                 .courseId(enrollment.getCourse().getCourseId())

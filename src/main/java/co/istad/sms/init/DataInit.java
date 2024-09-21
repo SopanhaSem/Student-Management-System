@@ -62,28 +62,28 @@ public class DataInit {
         departmentRepository.save(department4);
     }
     void initCourseData() {
-        Course course1 = new Course();
-        course1.setDepartments(course1.getDepartments());
-        course1.setCourseName("Mathematics");
-        course1.setCredits(3);
-        courseRepository.save(course1);
-
-        Course course2 = new Course();
-        course2.setCourseName("Physics");
-        course2.setCredits(4);
-        course2.setDepartments(course2.getDepartments());
-        courseRepository.save(course2);
-
-        Course course3 = new Course();
-        course3.setCourseName("Chemistry");
-        course3.setCredits(3);
-        course3.setDepartments(course3.getDepartments());
-        courseRepository.save(course3);
-
-        Course course4 = new Course();
-        course4.setCourseName("Biology");
-        course4.setCredits(4);
-        course4.setDepartments(course4.getDepartments());
-        courseRepository.save(course4);
+//        Course course1 = new Course();
+//        course1.setDepartments(course1.getDepartments());
+//        course1.setCourseName("Mathematics");
+//        course1.setCredits(3);
+//        courseRepository.save(course1);
+//
+//        Course course2 = new Course();
+//        course2.setCourseName("Physics");
+//        course2.setCredits(4);
+//        course2.setDepartments(course2.getDepartments());
+//        courseRepository.save(course2);
+//
+//        Course course3 = new Course();
+//        course3.setCourseName("Chemistry");
+//        course3.setCredits(3);
+//        course3.setDepartments(course3.getDepartments());
+//        courseRepository.save(course3);
+//
+//        Course course4 = new Course();
+//        course4.setCourseName("Biology");
+//        course4.setCredits(4);
+//        course4.setDepartments(course4.getDepartments());
+//        courseRepository.save(course4);
     }
 }
