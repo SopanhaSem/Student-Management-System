@@ -1,5 +1,6 @@
 package co.istad.sms.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,6 +29,7 @@ public class User {
     private String email;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private UserProfile userProfile;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)

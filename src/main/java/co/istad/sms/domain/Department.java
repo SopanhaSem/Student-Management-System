@@ -1,10 +1,9 @@
 package co.istad.sms.domain;
-
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import java.util.List;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -14,19 +13,20 @@ public class Department {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "department_id", updatable = false, nullable = false)
+    @Column(name = "department_id")
     private Integer departmentId;
 
     @Column(length = 100, nullable = false)
     private String departmentName;
 
-    @OneToMany(mappedBy = "department")
-    private List<Instructor> instructors;
-
-    @OneToMany(mappedBy = "department")
-    private List<Student> students;
-
-    @OneToMany(mappedBy = "departments")
+    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Course> courses;
 
+    @OneToMany(mappedBy = "department",cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Instructor> instructors;
+
+    @OneToMany(mappedBy = "department",cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Student> students;
 }
+

@@ -8,7 +8,13 @@ import java.time.LocalDate;
 public record EnrollmentResponse(
         Integer userId,
         Integer courseId,
-        String grade,
-        LocalDate enrollmentDate
+        String fullName,
+        String gender,
+        LocalDate dob,
+        String placeOfBirth,
+        String currentAddress,
+        String email,
+        String phoneNumber,
+        String grade
 ) {
 }

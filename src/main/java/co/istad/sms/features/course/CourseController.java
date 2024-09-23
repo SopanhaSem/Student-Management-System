@@ -1,13 +1,14 @@
 package co.istad.sms.features.course;
 
 import co.istad.sms.domain.Course;
+import co.istad.sms.features.course.dto.CourseResponse;
 import co.istad.sms.features.course.dto.CreateCourseRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,7 +19,7 @@ public class CourseController {
 
     @PostMapping
     public void createCourse(@RequestBody CreateCourseRequest request) {
-        courseService.createCourse(request);
+       courseService.createCourse(request);
     }
 
 
@@ -30,16 +31,17 @@ public class CourseController {
 
 
     @GetMapping("/{courseId}")
-    public ResponseEntity<Optional<Course>> getCourseById(@PathVariable Integer courseId) {
-        return null;
+    public ResponseEntity<CourseResponse> getCourseById(@PathVariable Integer courseId) {
+        return courseService.getCourseById(courseId);
     }
 
 
     @GetMapping
-    public ResponseEntity<List<Course>> getAllCourses() {
-        List<Course> courses = courseService.getAllCourses();
+    public ResponseEntity<List<CourseResponse>> getAllCourses() {
+        List<CourseResponse> courses = courseService.getAllCourses();
         return ResponseEntity.ok(courses);
     }
+
 
     @DeleteMapping("/{courseId}")
     public ResponseEntity<Void> deleteCourse(@PathVariable Integer courseId) {

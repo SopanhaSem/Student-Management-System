@@ -25,28 +25,44 @@ public class EnrollmentServiceImpl implements EnrollmentService{
     private final EnrollmentRepository enrollmentRepository;
     private final CourseRepository courseRepository;
     private final UserRepository userRepository;
-    private final EnrollmentMapper enrollmentMapper;
     @Override
     public EnrollmentResponse enrollStudent(EnrollmentRequest enrollmentRequest) {
         User user = userRepository.findById(enrollmentRequest.userId())
-                .orElseThrow(()-> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,"User not found"
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "User not found"
                 ));
+
         Course course = courseRepository.findById(enrollmentRequest.courseId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not found"));
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Course not found"
+                ));
 
         Enrollment enrollment = new Enrollment();
         enrollment.setUser(user);
         enrollment.setCourse(course);
+        enrollment.setFullName(enrollmentRequest.fullName());
+        enrollment.setGender(enrollmentRequest.gender());
+        enrollment.setDob(enrollmentRequest.dob());
+        enrollment.setPlaceOfBirth(enrollmentRequest.placeOfBirth());
+        enrollment.setCurrentAddress(enrollmentRequest.currentAddress());
+        enrollment.setEmail(enrollmentRequest.email());
+        enrollment.setPhoneNumber(enrollmentRequest.phoneNumber());
         enrollment.setEnrollmentDate(LocalDate.now());
         enrollment.setGrade(enrollmentRequest.grade());
+
         enrollmentRepository.save(enrollment);
 
         return EnrollmentResponse.builder()
                 .userId(enrollment.getUser().getUserId())
                 .courseId(enrollment.getCourse().getCourseId())
+                .fullName(enrollment.getFullName())
+                .gender(enrollment.getGender())
+                .dob(enrollment.getDob())
+                .placeOfBirth(enrollment.getPlaceOfBirth())
+                .currentAddress(enrollment.getCurrentAddress())
+                .email(enrollment.getEmail())
+                .phoneNumber(enrollment.getPhoneNumber())
                 .grade(enrollment.getGrade())
-                .enrollmentDate(enrollment.getEnrollmentDate())
                 .build();
     }
 
@@ -59,8 +75,14 @@ public class EnrollmentServiceImpl implements EnrollmentService{
                          .builder()
                          .userId(enrollment.getUser().getUserId())
                          .courseId(enrollment.getCourse().getCourseId())
+                         .fullName(enrollment.getFullName())
+                         .gender(enrollment.getGender())
+                         .dob(enrollment.getDob())
+                         .placeOfBirth(enrollment.getPlaceOfBirth())
+                         .currentAddress(enrollment.getCurrentAddress())
+                         .email(enrollment.getEmail())
+                         .phoneNumber(enrollment.getPhoneNumber())
                          .grade(enrollment.getGrade())
-                         .enrollmentDate(enrollment.getEnrollmentDate())
                          .build())
                  .toList();
     }
@@ -73,8 +95,14 @@ public class EnrollmentServiceImpl implements EnrollmentService{
         return EnrollmentResponse.builder()
                 .userId(enrollment.getUser().getUserId())
                 .courseId(enrollment.getCourse().getCourseId())
+                .fullName(enrollment.getFullName())
+                .gender(enrollment.getGender())
+                .dob(enrollment.getDob())
+                .placeOfBirth(enrollment.getPlaceOfBirth())
+                .currentAddress(enrollment.getCurrentAddress())
+                .email(enrollment.getEmail())
+                .phoneNumber(enrollment.getPhoneNumber())
                 .grade(enrollment.getGrade())
-                .enrollmentDate(enrollment.getEnrollmentDate())
                 .build();
     }
 

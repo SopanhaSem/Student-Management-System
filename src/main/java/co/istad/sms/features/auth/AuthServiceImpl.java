@@ -104,7 +104,7 @@ public class AuthServiceImpl implements AuthService{
                 .issuer("web")
                 .audience(List.of("nextjs", "reactjs"))
                 .subject("Access Token")
-                .expiresAt(now.plus(1, ChronoUnit.MINUTES))
+                .expiresAt(now.plus(10, ChronoUnit.MINUTES))
 //                .claim("scope", scope)
                 .build();
         JwtClaimsSet jwtClaimsSetRefreshToken = JwtClaimsSet.builder()
