@@ -8,8 +8,8 @@ import java.util.List;
 
 public record ResponseDepartment(
         String departmentName,
-        List<Course> courses,
-        List<Instructor> instructors,
-        List<Student> students
+        List<Integer> courseIds,
+        List<Integer> instructorIds,
+        List<Integer> studentIds
 ) {
 }

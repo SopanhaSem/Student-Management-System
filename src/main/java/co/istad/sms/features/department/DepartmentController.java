@@ -22,6 +22,13 @@ public class DepartmentController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    @PutMapping("/{departmentId}")
+    public ResponseEntity<ResponseDepartment> updateDepartment(
+            @PathVariable Integer departmentId,
+            @RequestBody CreateDepartmentRequest createDepartmentRequest) {
+        ResponseDepartment updatedDepartment = departmentService.updateDepartment(departmentId, createDepartmentRequest);
+        return ResponseEntity.ok(updatedDepartment);
+    }
     @GetMapping
     public ResponseEntity<List<ResponseDepartment>> getAllDepartments() {
         List<ResponseDepartment> departments = departmentService.getAllDepartment();

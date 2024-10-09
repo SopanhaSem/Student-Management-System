@@ -32,5 +32,8 @@ public class Enrollment {
     private LocalDate enrollmentDate;
 
     private String grade;
+
+    @ManyToOne
+    private Student student;
 }
 

@@ -114,6 +114,7 @@ public class CourseServiceImpl implements CourseService {
                 .map(enrollment -> new EnrollmentResponse(
                         enrollment.getUser().getUserId(),
                         enrollment.getCourse().getCourseId(),
+                        enrollment.getStudent().getStudentId(),
                         enrollment.getFullName(),
                         enrollment.getGender(),
                         enrollment.getDob(),
@@ -141,6 +142,7 @@ public class CourseServiceImpl implements CourseService {
                             .map(enrollment -> new EnrollmentResponse(
                                     enrollment.getUser().getUserId(),
                                     enrollment.getCourse().getCourseId(),
+                                    enrollment.getStudent().getStudentId(),
                                     enrollment.getFullName(),
                                     enrollment.getGender(),
                                     enrollment.getDob(),

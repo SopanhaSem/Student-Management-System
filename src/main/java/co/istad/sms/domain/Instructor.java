@@ -16,13 +16,12 @@ public class Instructor {
     @Column(name = "instructor_id", updatable = false, nullable = false)
     private Integer instructorId;
 
-    @Column(length = 100, nullable = false)
+    @Column(length = 100)
     private String name;
 
-    @Column(length = 100, nullable = false, unique = true)
+    @Column(length = 100, unique = true)
     private String email;
 
-    @Column(nullable = false)
     private String dob;
 
     @Column(length = 100)

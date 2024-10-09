@@ -17,17 +17,16 @@ public class Course {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "course_id", updatable = false, nullable = false)
+    @Column(name = "course_id")
     private Integer courseId;
 
-    @Column(nullable = false, length = 100,unique = true)
+    @Column( length = 100,unique = true)
     private String courseName;
 
-    @Column(nullable = false)
     private Integer credits;
 
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JsonBackReference
     @JoinColumn(name = "department_id")
     private Department department;
@@ -35,4 +34,10 @@ public class Course {
     @OneToMany(mappedBy = "course")
     @JsonIgnore
     private List<Enrollment> enrollments;
+
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Attendance> attendances;
+
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Grade> grades;
 }
