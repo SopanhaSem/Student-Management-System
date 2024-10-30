@@ -11,4 +11,8 @@ public interface AuthService {
     void verify(VerifyRequest verifyRequest);
 
     void register(RegisterRequest registerRequest) throws MessagingException;
+    void requestPasswordReset(PasswordResetRequest passwordResetRequest) throws MessagingException;
+
+    void resetPassword(ResetPasswordRequest resetPasswordRequest);
+
 }

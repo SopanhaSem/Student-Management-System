@@ -33,6 +33,7 @@ import java.time.Instant;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -211,5 +212,68 @@ public class AuthServiceImpl implements AuthService{
         helper.setFrom(adminMail);
         helper.setText(myHtml, true);
         javaMailSender.send(mimeMessage);
+    }
+
+    @Override
+    public void requestPasswordReset(PasswordResetRequest passwordResetRequest) throws MessagingException {
+        User user = userRepository.findByEmail(passwordResetRequest.email())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Email not found"));
+
+        String verificationCode = RandomUtil.random6Digits();
+        LocalTime expiryTime = LocalTime.now().plusMinutes(5);
+
+        Optional<EmailVerification> existingVerificationOptional = emailVerificationRepository.findByUser(user);
+        if (existingVerificationOptional.isPresent()) {
+            EmailVerification existingVerification = existingVerificationOptional.get();
+            existingVerification.setVerificationCode(verificationCode);
+            existingVerification.setExpiryTime(expiryTime);
+            emailVerificationRepository.save(existingVerification);
+        } else {
+            EmailVerification emailVerification = new EmailVerification();
+            emailVerification.setVerificationCode(verificationCode);
+            emailVerification.setExpiryTime(expiryTime);
+            emailVerification.setUser(user);
+            emailVerificationRepository.save(emailVerification);
+        }
+        String resetEmailHtml = String.format("""
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px;">
+            <h2>Password Reset Request</h2>
+            <p>Please use the following code to reset your password:</p>
+            <h1>%s</h1>
+            <p>If you did not request this reset, please ignore this email.</p>
+        </div>
+        """, verificationCode);
+
+        // Send the email
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
+        helper.setSubject("Password Reset Request");
+        helper.setTo(user.getEmail());
+        helper.setFrom(adminMail);
+        helper.setText(resetEmailHtml, true);
+        javaMailSender.send(mimeMessage);
+    }
+
+
+    @Override
+    public void resetPassword(ResetPasswordRequest resetPasswordRequest) {
+        if (!resetPasswordRequest.newPassword().equals(resetPasswordRequest.confirmPassword())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Passwords do not match");
+        }
+
+        User user = userRepository.findByEmail(resetPasswordRequest.email())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Email not found"));
+
+        EmailVerification emailVerification = emailVerificationRepository.findByUser(user)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Reset code not found"));
+
+        if (!emailVerification.getVerificationCode().equals(resetPasswordRequest.resetCode()) ||
+                LocalTime.now().isAfter(emailVerification.getExpiryTime())) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid or expired reset code");
+        }
+
+        user.setPassword(passwordEncoder.encode(resetPasswordRequest.newPassword()));
+        userRepository.save(user);
+        emailVerificationRepository.delete(emailVerification);
     }
 }

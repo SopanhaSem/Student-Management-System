@@ -37,4 +37,13 @@ public class AuthController {
     void register(@Valid @RequestBody RegisterRequest registerRequest) throws MessagingException {
         authService.register(registerRequest);
     }
+    @PostMapping("/request-password-reset")
+    void requestPasswordReset(@Valid @RequestBody PasswordResetRequest passwordResetRequest) throws MessagingException {
+        authService.requestPasswordReset(passwordResetRequest);
+    }
+
+    @PostMapping("/reset-password")
+    void resetPassword(@Valid @RequestBody ResetPasswordRequest resetPasswordRequest) {
+        authService.resetPassword(resetPasswordRequest);
+    }
 }
