@@ -1,5 +1,19 @@
 services:
-  mobile-banking-db:
+  sms-api:
+    image: "sms-api"
+    build: .
+    container_name: sms-api
+    ports:
+      - 16800:9090
+    volumes:
+      - F:/Sem Sopanha/Spring Framework/BankSystem/File Server/:/File Server/
+    networks:
+      - sms-net
+    restart: always
+    depends_on:
+      -  sms-db
+
+  sms-db:
     image: postgres:16.3-bullseye
     container_name: con-sms-db
     ports:
@@ -9,7 +23,13 @@ services:
       POSTGRES_USER: sms
       POSTGRES_DB: sms_db
     volumes:
-      - mobile-banking-vol:/var/lib/postgresql/data
+      - sms-vol:/var/lib/postgresql/data
+    networks:
+      - sms-net
 
 volumes:
-  mobile-banking-vol:
+  sms-vol:
+
+networks:
+  sms-net:
+    driver: bridge
